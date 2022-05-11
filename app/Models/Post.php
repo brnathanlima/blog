@@ -2,49 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\File;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Post
+class Post extends Model
 {
-    public function __construct(
-        public $title,
-        public $excerpt,
-        public $date,
-        public $body,
-        public $slug
-    ) {}
+    use HasFactory;
 
-    public static function all()
+    protected $guarded = [];
+    protected $with = ['category', 'author'];
+
+    public function getRouteKeyName()
     {
-        return cache()->rememberForever(
-            'posts.all',
-            fn () => collect(File::files(resource_path('posts')))
-                ->map(fn ($file) => YamlFrontMatter::parseFile($file))
-                ->map(fn ($document) => new Post(
-                    title: $document->title,
-                    date: $document->date,
-                    excerpt: $document->excerpt,
-                    body: $document->body(),
-                    slug: $document->slug
-                ))->sortByDesc('date')
-        );
+        return 'slug';
     }
 
-    public static function find($slug)
+    public function category()
     {
-       return static::all()->firstWhere('slug', $slug);
+        return $this->belongsTo(Category::class);
     }
 
-    public static function findOrFail($slug)
+    public function author()
     {
-        $posts = static::all()->firstWhere('slug', $slug);
-
-        if (!$posts) {
-            throw new ModelNotFoundException();
-        }
-
-        return $posts;
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
