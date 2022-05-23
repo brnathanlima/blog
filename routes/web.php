@@ -3,8 +3,8 @@
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\User;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,41 +17,20 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
-Route::get('/', function () {
-    /* DB::listen(function ($query) {
-        logger($query->sql);
-    }); */
+Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('post')/* ->where('post', '[A-z_\-]+') */;
 
-    // $posts = Post::latest()->with('category', 'author')->get();
-
-
-    $posts = Post::latest()->get();
-
-    return view('posts', [
-        'posts' => $posts,
-        'categories' => Category::all()
-    ]);
-})->name('home');
-
-Route::get('/posts/{post:slug}', function (Post $post) {
-    return view('post', [
-        'post' => $post
-    ]);
-})->name('post')/* ->where('post', '[A-z_\-]+') */;
-
-Route::get('/categories/{category:slug}', function (Category $category) {
+/* Route::get('/categories/{category:slug}', function (Category $category) {
     return view('posts', [
         // 'posts' => $category->posts->load(['category', 'author'])
         'posts' => $category->posts,
         'current_category' => $category,
-        'categories' => Category::all()
     ]);
-})->name('category');
+})->name('category'); */
 
-Route::get('/authors/{author:username}', function (User $author) {
-    return view('posts', [
+/* Route::get('/authors/{author:username}', function (User $author) {
+    return view('posts.index', [
         // 'posts' => $author->posts->load(['category', 'author'])
-        'posts' => $author->posts,
-        'categories' => Category::all()
+        'posts' => $author->posts
     ]);
-})->name('author');
+})->name('author'); */
