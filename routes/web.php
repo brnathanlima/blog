@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 use App\Models\Post;
 use App\Models\Category;
 use App\Models\User;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +22,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'index'])->name('home');
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('post')/* ->where('post', '[A-z_\-]+') */;
+
+Route::get('register', [RegisterController::class, 'form'])->middleware('guest')->name('register.form');
+Route::post('/register', [RegisterController::class, 'store'])->middleware('guest')->name('register.store');
+
+Route::get('/login', [LoginController::class, 'form'])->middleware('guest');
+Route::post('/login', [LoginController::class, 'login'])->middleware('guest')->name('login');
+
+Route::post('logout', LogoutController::class)->middleware('auth');
 
 /* Route::get('/categories/{category:slug}', function (Category $category) {
     return view('posts', [
