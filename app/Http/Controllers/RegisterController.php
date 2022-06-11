@@ -11,7 +11,7 @@ class RegisterController extends Controller
 {
     public function form()
     {
-        return view('register.create');
+        return view('register.form');
     }
 
     public function store()
