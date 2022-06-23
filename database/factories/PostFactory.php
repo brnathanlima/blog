@@ -19,9 +19,12 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        $users = User::all()->count();
+        $categories = Category::all()->count();
+
         return [
-            'user_id' => User::factory(),
-            'category_id' => Category::factory(),
+            'user_id' => $this->faker->numberBetween(1, $users),
+            'category_id' => $this->faker->numberBetween(1, $categories),
             'title' => $this->faker->sentence(),
             'slug' => $this->faker->slug(),
             'excerpt' => '<p>' . implode('</p><p>', $this->faker->paragraphs(2)) . '</p>',
