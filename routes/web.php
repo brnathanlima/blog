@@ -2,9 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
-use App\Models\Post;
-use App\Models\Category;
-use App\Models\User;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\RegisterController;
@@ -33,6 +31,8 @@ Route::get('/login', [LoginController::class, 'form'])->middleware('guest');
 Route::post('/login', [LoginController::class, 'login'])->middleware('guest')->name('login');
 
 Route::post('logout', LogoutController::class)->middleware('auth');
+
+Route::post('/newsletter', NewsletterController::class);
 
 /* Route::get('/categories/{category:slug}', function (Category $category) {
     return view('posts', [
