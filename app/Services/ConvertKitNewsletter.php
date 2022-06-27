@@ -6,7 +6,7 @@ use App\Interfaces\Newsletter;
 
 class ConvertKitNewsletter implements Newsletter
 {
-    public function convert(string $email, string $list = null)
+    public function subscribe(string $email, ?string $list = null)
     {
 
     }
