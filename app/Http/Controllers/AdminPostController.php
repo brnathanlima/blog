@@ -98,9 +98,9 @@ class AdminPostController extends Controller
                 Rule::unique('posts', 'slug')->ignore($post)
             ],
             'thumbnail' => $post::exists() ? [
-                'required',
                 'image'
             ] : [
+                'required',
                 'image'
             ],
             'excerpt' => 'required',
