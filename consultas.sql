@@ -9,3 +9,5 @@ DELETE FROM comments WHERE id=2;
 DELETE FROM posts where id=1;
 
 UPDATE comments SET created_at=datetime('now'), updated_at=datetime('now');
+
+UPDATE posts SET published_at=datetime('now');
