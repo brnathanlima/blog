@@ -4,7 +4,7 @@
     <div class="py-6 px-5 lg:flex">
         <div class="flex-1 lg:mr-8">
             {{-- TODO --}}
-            <img src="{{ asset("storage/{$post->thumbnail}") }}" alt="Thumbnail" class="rounded-xl">
+            <img src="{{ Storage::disk('s3')->temporaryUrl($post->thumbnail, now()->addMinutes(5)) }}" alt="Thumbnail" class="rounded-xl">
         </div>
 
         <div class="flex-1 flex flex-col justify-between">

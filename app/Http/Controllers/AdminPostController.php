@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class AdminPostController extends Controller
@@ -54,7 +55,10 @@ class AdminPostController extends Controller
 
         request()->user()->posts()->create(array_merge($this->validatePost(), [
             'published_at' => Carbon::now(),
-            'thumbnail' => request()->file('thumbnail')->store('thumbnails')
+            'thumbnail' => request()->file('thumbnail')->storeAs(
+                'thumbnails',
+                'thumbnail_' . time() . '.' . request()->file('thumbnail')->extension()
+            )
         ]));
 
         return redirect('/');
@@ -72,7 +76,10 @@ class AdminPostController extends Controller
         $this->validatePost($post);
 
         if ($attributes['thumbnail'] ?? false) {
-            $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+            $attributes['thumbnail'] = request()->file('thumbnail')->storeAs(
+                'thumbnails',
+                'thumbnail_' . time() . '.' . request()->file('thumbnail')->extension()
+            );
         }
 
         $post->update($attributes);
